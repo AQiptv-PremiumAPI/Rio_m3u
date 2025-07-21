@@ -17,6 +17,7 @@ export async function onRequest(context) {
 
   const validUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36';
 
+  // ✅ First validate UA BEFORE redirection
   if ((path.includes('/key/') || path.includes('/mpd/')) && ua !== validUA)
     return new Response('Unauthorized Access, Telegram:@RioUniverse', { status: 401 });
 
@@ -31,10 +32,11 @@ export async function onRequest(context) {
     if (ua !== 'RioIptv') return new Response('Unauthorized Access, Telegram:@RioUniverse', { status: 401 });
   }
 
+  // ✅ Then redirect if everything valid
   if (path.includes('/key/')) return Response.redirect(`https://tp.kliv.fun/tp8/key.php?id=${id}`, 307);
   if (path.includes('/mpd/')) return Response.redirect(`http://103.168.18.108/tpo/manifest.mpd?id=${id}`, 307);
   if (path.includes('/key1bb/')) return Response.redirect(`https://tsiptv.fun/play/HOME/jio/jio-dash/ch-ori.key?id=${id}`, 307);
   if (path.includes('/mpd1bbn/')) return Response.redirect(`https://tsiptv.fun/play/HOME/jio/jio-dash/ch-ori.mpd?id=${id}`, 307);
 
-  return p(context); // Custom fallback handler (if needed)
+  return p(context);
 }
