@@ -1,18 +1,28 @@
-export default function handler(req, res) {
-  const { name } = req.query;
-  const ua = req.headers['user-agent'] || '';
-  const host = req.headers.host;
+export default async function playlist(context) {
+  const { name } = context.params;
+  const { request, env } = context;
+  const ua = request.headers.get('user-agent') || '';
+  const host = new URL(request.url).host;
   const base = `https://${host}`;
   const defaultUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36';
-  const user = (process.env.USER_ID || '').split(',').map(e => e.split(':')).find(([n]) => n === name);
-  if (!user || !user[1]) return res.status(404).send('User Not Found or Expired');
-  if (/(Mozilla|Chrome|Safari|Firefox|Edge)/i.test(ua) && !/NSPlayer/i.test(ua)) return res.setHeader('Content-Type', 'text/html'), res.status(200).send('<meta http-equiv="refresh" content="0;url=https://t.me/RioUniverse">');
+
+  const userList = (env.USER_ID || '').split(',').map(e => e.split(':'));
+  const user = userList.find(([n]) => n === name);
+  if (!user || !user[1]) {
+    return new Response('User Not Found or Expired', { status: 404 });
+  }
+
+  // Block browsers except NSPlayer
+  if (/(Mozilla|Chrome|Safari|Firefox|Edge)/i.test(ua) && !/NSPlayer/i.test(ua)) {
+    return new Response('<meta http-equiv="refresh" content="0;url=https://t.me/RioUniverse">', {
+      headers: { 'Content-Type': 'text/html' },
+    });
+  }
 
   const [username, expiry] = user;
   const exp = Math.floor(new Date(expiry).getTime() / 1000);
 
-  res.setHeader('Content-Type', 'text/plain');
-  res.status(200).send(`#EXTM3U billed-till="${exp}" billed-msg="✨TG @RioUniverse Premium✨"
+  const playlist = `#EXTM3U billed-till="${exp}" billed-msg="✨TG @RioUniverse Premium✨"
 
 #EXTM3U × "RioIptv Premium Subscription"
 
@@ -5354,5 +5364,11 @@ ${base}/tplay/${username}/live/PeaceTvEnglish|User-Agent=RioIptv
 
 #EXTINF:-1 tvg-id="" catchup-type="append" catchup-days="8" catchup-source="&begin={utc}&end={utcend}" group-title="Devotional" group-logo="https://i.ibb.co/xqHNRzcB/TPlay-Rio-Iptv.png" tvg-logo="https://i.ibb.co/nNJd2LGz/Peace-TVBangla.png",Peace TV Bangla 
 ${base}/tplay/${username}/live/PeaceTvBangla|User-Agent=RioIptv
-`);
+`;
+
+  return new Response(playlist, {
+    headers: {
+      'Content-Type': 'text/plain',
+    },
+  });
 }
