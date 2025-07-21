@@ -29,7 +29,7 @@ export async function onRequest(context) {
 
   const redirects = {
     '/key/':     `https://tp.kliv.fun/tp8/key.php?id=${id}`,
-    '/mpd/':     `http://103.168.18.108/tpo/manifest.mpd?id=${id}`,
+    '/mpd/':     `https://tplay-by07.iptv07india.workers.dev/play.mpd?id=${id}`,
     '/key1bb/':  `https://tsiptv.fun/play/HOME/jio/jio-dash/ch-ori.key?id=${id}`,
     '/mpd1bbn/': `https://tsiptv.fun/play/HOME/jio/jio-dash/ch-ori.mpd?id=${id}`,
   };
