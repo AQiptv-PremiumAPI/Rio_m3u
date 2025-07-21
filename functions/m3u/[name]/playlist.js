@@ -1,9 +1,4 @@
-export default function handler(req, res) {
-  const { name } = req.query, ua = req.headers['user-agent'] || '', host = req.headers.host, base = `https://${host}`, defaultUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36', u = (process.env.USER_ID || '').split(',').map(e => e.split(':')).find(([n]) => n === name);
-  if (!u || !u[1]) return res.status(404).send('User Not Found or Expired');
-  if (/(Mozilla|Chrome|Safari|Firefox|Edge)/i.test(ua) && !/NSPlayer/i.test(ua)) return res.setHeader('Content-Type', 'text/html'), res.status(200).send('<meta http-equiv="refresh" content="0;url=https://t.me/RioUniverse">');
-  const [username, expiry] = u, exp = Math.floor(new Date(expiry).getTime() / 1000);
-  res.setHeader('Content-Type', 'text/plain'), res.status(200).send(`#EXTM3U billed-till="${exp}" billed-msg="✨TG @RioUniverse Premium✨"
+('Content-Type', 'text/plain'), res.status(200).send(`#EXTM3U billed-till="${exp}" billed-msg="✨TG @RioUniverse Premium✨"
 
 #EXTM3U × "RioIptv Premium Subscription"
 
