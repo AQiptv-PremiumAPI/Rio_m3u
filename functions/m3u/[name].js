@@ -39,3 +39,4 @@ export async function onRequest(context) {
 
   return playlist(context); // ✅ If all checks pass, serve playlist.js
 }
+
