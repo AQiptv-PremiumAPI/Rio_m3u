@@ -33,10 +33,10 @@ export async function onRequest(context) {
   }
 
   // ✅ Then redirect if everything valid
-  if (path.includes('/key/')) return Response.redirect(`https://tp.kliv.fun/tp8/key.php?id=${id}`, 307);
-  if (path.includes('/mpd/')) return Response.redirect(`http://103.168.18.108/tpo/manifest.mpd?id=${id}`, 307);
-  if (path.includes('/key1bb/')) return Response.redirect(`https://tsiptv.fun/play/HOME/jio/jio-dash/ch-ori.key?id=${id}`, 307);
-  if (path.includes('/mpd1bbn/')) return Response.redirect(`https://tsiptv.fun/play/HOME/jio/jio-dash/ch-ori.mpd?id=${id}`, 307);
+  if (path.includes('/m3u/${name}/key/')) return Response.redirect(`https://tp.kliv.fun/tp8/key.php?id=${id}`, 307);
+  if (path.includes('/m3u/${name}/mpd/')) return Response.redirect(`http://103.168.18.108/tpo/manifest.mpd?id=${id}`, 307);
+  if (path.includes('/m3u/${name}/key1bb/')) return Response.redirect(`https://tsiptv.fun/play/HOME/jio/jio-dash/ch-ori.key?id=${id}`, 307);
+  if (path.includes('/m3u/${name}/mpd1bbn/')) return Response.redirect(`https://tsiptv.fun/play/HOME/jio/jio-dash/ch-ori.mpd?id=${id}`, 307);
 
   return p(context);
 }
