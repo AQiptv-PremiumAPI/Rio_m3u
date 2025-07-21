@@ -4,7 +4,7 @@ export default (r, s) => {
   const { name } = r.query, ua = r.headers['user-agent'] || '', url = r.url || '', id = url.split(/\/(?:key|mpd|key1|mpd1|key2|mpd2)\//).pop().split('?')[0], u = (process.env.USER_ID || '').split(',').map(e => e.split(':')).find(([n]) => n === name);
   if (!u) return s.status(404).send('Incorrect Token, Telegram:@RioUniverse');
   if (!u[1] || new Date() > new Date(u[1])) return s.status(403).send('Token Expired - Buy Now!,Telegram:@RioUniverse');
-  if (!url.includes(`tplay/${name}`)) return s.status(404).send('Invalid Request');
+  if (!url.includes(`m3u/${name}`)) return s.status(404).send('Invalid Request');
 
   const validUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36';
   if ((url.includes('/key/') || url.includes('/mpd/')) && ua !== validUA) return s.status(401).send('Unauthorized Access, Telegram:@RioUniverse');
